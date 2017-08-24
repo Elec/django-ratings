@@ -1,5 +1,6 @@
 import os.path
 import warnings
+import collections
 
 __version__ = (0, 4, 0, 2)
 
@@ -36,7 +37,7 @@ def lazy_object(location):
         except:
             imp = __import__(parts[0], globals(), locals(), [parts[1]])
         func = getattr(imp, parts[1])
-        if callable(func):
+        if isinstance(func, collections.Callable):
             return func(*args, **kwargs)
         return func
     return inner

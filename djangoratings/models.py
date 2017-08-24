@@ -9,7 +9,7 @@ try:
 except ImportError:
     now = datetime.now
 
-from managers import VoteManager, SimilarUserManager
+from .managers import VoteManager, SimilarUserManager
 
 
 class Vote(models.Model):
@@ -30,8 +30,8 @@ class Vote(models.Model):
     class Meta:
         unique_together = (('content_type', 'object_id', 'key', 'user', 'ip_address', 'cookie'))
 
-    def __unicode__(self):
-        return u"%s voted %s on %s" % (self.user_display, self.score, self.content_object)
+    def __str__(self):
+        return "%s voted %s on %s" % (self.user_display, self.score, self.content_object)
 
     def save(self, *args, **kwargs):
         self.date_changed = now()
@@ -62,8 +62,8 @@ class Score(models.Model):
     class Meta:
         unique_together = (('content_type', 'object_id', 'key'),)
 
-    def __unicode__(self):
-        return u"%s scored %s with %s votes" % (self.content_object, self.score, self.votes)
+    def __str__(self):
+        return "%s scored %s with %s votes" % (self.content_object, self.score, self.votes)
 
 
 class SimilarUser(models.Model):
@@ -78,8 +78,8 @@ class SimilarUser(models.Model):
     class Meta:
         unique_together = (('from_user', 'to_user'),)
 
-    def __unicode__(self):
-        print u"%s %s similar to %s" % (self.from_user, self.exclude and 'is not' or 'is', self.to_user)
+    def __str__(self):
+        return "%s %s similar to %s" % (self.from_user, self.exclude and 'is not' or 'is', self.to_user)
 
 
 class IgnoredObject(models.Model):
@@ -92,5 +92,5 @@ class IgnoredObject(models.Model):
     class Meta:
         unique_together = (('content_type', 'object_id'),)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.content_object
